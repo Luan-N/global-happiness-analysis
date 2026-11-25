@@ -1,69 +1,55 @@
-# What Makes Countries Happy? Global Happiness and Development Indicators
+# U.S. Happiness and Survey Responses
 
-## Authors
+## Project question
 
-- [Luan Nguyen](https://github.com/Luan-N) — Author #1 (solo project)
+How are self-reported health, family income, marital status, age, and schooling associated with reported happiness among U.S. adults surveyed in 2024?
 
-## Project Description
+This is an observational analysis. The results describe associations in survey responses and do not establish causes.
 
-This project analyzes World Happiness Report scores alongside World Bank indicators to find which factors are linked to national happiness. The data covers many countries and includes variables such as GDP per capita, life expectancy, social support, and freedom.
+## Data
 
-After cleaning the data, I will use correlation, regression, and ANOVA to examine which factors are most strongly associated with happiness and whether happiness differs by region. The results will be presented through static charts and an interactive dashboard. The project will also discuss bias, missing data, and the limits of drawing causal conclusions from observational data.
+The project uses the 2024 General Social Survey (GSS), release 3a, collected by NORC at the University of Chicago. The official source and documentation are available from the [GSS data page](https://gss.norc.org/get-the-data/stata.html) and [2024 codebook](https://gss.norc.org/content/dam/gss/get-documentation/pdf/codebook/GSS%202024%20Codebook%20R3a.pdf).
 
-## Project Outline and Plan
+`dataset.csv` is the project input: a 9-column respondent-level extract with 3,986 rows. `cleaned_dataset.csv` is a separate working copy produced by the notebook. Both retain all respondents and blank missing answers. The cleaned copy represents age `89` as the top-coded answer “89 or older,” and education `20` as “20 or more years.” Neither code is an exact value for calculations requiring exact age or schooling years.
 
-- **Milestone 0:** Choose a dataset and audit its quality
-- **Milestone 1:** Clean the data and run statistical analyses
-- **Milestone 2:** Build five or more static visualizations
-- **Milestone 3:** Build an interactive dashboard
-- **Final:** Write the final report and prepare the presentation
-- **Optional:** Build a machine-learning regression model to predict happiness scores
+The project retains the `amerstatus` sample indicator and `wtssnrps_as` combined-sample weight. The current charts and chi-square tests are unweighted; their results are descriptions/tests of the observed sample, not design-adjusted U.S. population estimates.
 
-## Interface Plan
+## Project files
 
-The project will include an interactive Plotly dashboard. Users will be able to filter the data by region and year and hover over charts to see additional country-level details.
+- `happiness_analysis.ipynb`: milestone documentation, data cleaning, descriptive statistics, inferential tests, five static visualizations, and the interactive dashboard export code.
+- `dataset.csv`: selected input extract; do not overwrite it during cleaning.
+- `cleaned_dataset.csv`: cleaned working copy created by the notebook.
+- `milestone2_1_health.png`: happiness distribution by self-rated health.
+- `milestone2_2_marital.png`: happiness distribution by marital status.
+- `milestone2_3_income.png`: happiness distribution across seven ordered income bands.
+- `milestone2_4_age.png`: age distributions by happiness answer; code 89 represents 89+.
+- `milestone2_5_education.png`: happiness percentages by schooling-year ranges.
+- `milestone3_dashboard.html`: standalone interactive dashboard with health/happiness, age, and income views; a marital-status dropdown filters all three views.
 
-## Data Collection and Storage Plan
+## Reproduce
 
-This section was written by Author #1.
+From this directory, install the notebook dependencies in your Python environment:
 
-World Happiness Report data, along with World Bank indicators when needed, will be downloaded as CSV files.
-
-- Raw files will be stored in `data/raw/`.
-- Cleaned datasets will be stored in `data/cleaned/`.
-
-## Data Analysis and Visualization Plan
-
-Because this is a solo project, Author #1 is also responsible for this section.
-
-Python will be used for data cleaning and statistical analysis:
-
-- `pandas` for loading, cleaning, and transforming data
-- `scipy` for statistical tests
-- `matplotlib` and `seaborn` for static charts
-- `plotly` for interactive visualizations and the dashboard
-
-Planned visualizations include:
-
-- Happiness score versus GDP per capita
-- A correlation heatmap
-- Happiness scores by region
-- Additional comparisons across years and development indicators
-
-## Repository Structure
-
-```text
-.
-├── data/
-│   ├── raw/
-│   └── cleaned/
-├── notebooks/
-├── src/
-├── README.md
-├── LICENSE
-└── .gitignore
+```bash
+python -m pip install pandas scipy matplotlib plotly jupyter
 ```
 
-## Limitations
+Open `happiness_analysis.ipynb` in Jupyter and run its code cells from top to bottom. The cleaning cell regenerates `cleaned_dataset.csv`; the static-visualization cell regenerates the five PNGs; the final dashboard cell regenerates `milestone3_dashboard.html`. The HTML dashboard is self-contained and works offline.
 
-The analysis will identify associations, not prove that any particular factor causes happiness. Results may also be affected by survey methodology, differences in data availability between countries and years, missing values, and regional or cultural measurement bias.
+## Analysis summary
+
+- Cleaning preserves unanswered values rather than inventing responses. It converts age and completed schooling labels to numeric codes while documenting their top-coded values.
+- Descriptive statistics report numeric summaries only where values are meaningful, and counts/percentages for categorical or bracketed responses.
+- Two exploratory Pearson chi-square tests compare happiness with self-rated health and marital status. Both show associations in the unweighted sample. The tests do not account for the GSS sample design and do not demonstrate causation.
+- Static plots use a colorblind-friendly sequential blue palette for the ordered happiness responses. Their design rationale and accessibility/bias critique are documented in the notebook.
+- The interactive dashboard provides a marital-status dropdown and hover/zoom interactions. Peer usability feedback has **not yet been collected**; the notebook records a plan for obtaining and documenting actual feedback.
+
+## Limitations and responsible interpretation
+
+- Happiness, health, income, and education are based on respondent answers; they are not objective clinical or financial measurements.
+- `income16` contains family-income brackets, not exact dollar amounts. Its highest category is open-ended, and 423 respondents (10.6%) have no reported income bracket.
+- Age `89` means 89 or older; education `20` means 20 or more years. Use caution when a plot treats these codes numerically.
+- The 2024 survey is a single-year snapshot. It cannot show changes over time or establish causal effects.
+- Static visualizations and ordinary chi-square tests are unweighted and do not include survey-design-adjusted uncertainty. Do not present them as precise national population estimates.
+- Grouping categories aids readability but can hide within-group variation. Smaller subgroups have less stable percentages.
+- Peer feedback for the dashboard remains outstanding and should be collected before claiming the usability requirement is complete.
