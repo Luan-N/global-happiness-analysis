@@ -12,7 +12,7 @@ The project uses the 2024 General Social Survey (GSS), release 3a, collected by 
 
 `dataset.csv` is the project input: a 9-column respondent-level extract with 3,986 rows. `cleaned_dataset.csv` is a separate working copy produced by the notebook. Both retain all respondents and blank missing answers. The cleaned copy represents age `89` as the top-coded answer “89 or older,” and education `20` as “20 or more years.” Neither code is an exact value for calculations requiring exact age or schooling years.
 
-The project retains the `amerstatus` sample indicator and `wtssnrps_as` combined-sample weight. The current charts and chi-square tests are unweighted; their results are descriptions/tests of the observed sample, not design-adjusted U.S. population estimates.
+The project retains the `amerstatus` sample indicator and uses the `wtssnrps_as` combined-sample weight in the charts, following [NORC's 2024 AmeriSpeak oversample guidance](https://gss.norc.org/content/dam/gss/get-documentation/pdf/reports/methodological-reports/GSS%20MR148%20AmeriSpeak%202024%20Oversample.pdf). Respondent counts remain unweighted. Descriptive statistics and chi-square tests are unweighted; the tests do not account for the survey design.
 
 ## Project files
 
@@ -50,6 +50,6 @@ Open `happiness_analysis.ipynb` in Jupyter and run its code cells from top to bo
 - `income16` contains family-income brackets, not exact dollar amounts. Its highest category is open-ended, and 423 respondents (10.6%) have no reported income bracket.
 - Age `89` means 89 or older; education `20` means 20 or more years. Use caution when a plot treats these codes numerically.
 - The 2024 survey is a single-year snapshot. It cannot show changes over time or establish causal effects.
-- Static visualizations and ordinary chi-square tests are unweighted and do not include survey-design-adjusted uncertainty. Do not present them as precise national population estimates.
+- Weighted visualizations do not include survey-design-adjusted uncertainty, and ordinary chi-square tests are unweighted. Weighting does not eliminate all bias or establish causal effects.
 - Grouping categories aids readability but can hide within-group variation. Smaller subgroups have less stable percentages.
 - Peer feedback for the dashboard remains outstanding and should be collected before claiming the usability requirement is complete.
